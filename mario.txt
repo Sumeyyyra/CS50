@@ -1,0 +1,29 @@
+#include <cs50.h>
+#include <stdio.h>
+
+int main(void)
+{int number;
+do 
+{number=get_int("heigh:");
+}while(number<0 ||number>8);
+
+{int i,j,k;
+for(i=1;i<=number;i++)
+{
+    for(k=1;k<=number-i;k++)
+    {printf(" ");}
+    for(j=1;j<=i;j++)
+   {
+     printf("*");  
+   } 
+printf("\n");
+}
+
+
+}
+
+
+}
+
+
+https://lab.cs50.io/cs50/labs/2018/fall/mario/less/?

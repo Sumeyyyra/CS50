@@ -1,0 +1,174 @@
+#include "helpers.h"
+#include "math.h"
+// Convert image to grayscale
+void grayscale(int height, int width, RGBTRIPLE image[height][width])
+{
+
+    for(int i=0 ; i<height ; i++)
+    {
+        for(int j=0 ; j<width ; j++)
+        {
+          float r=image[i][j].rgbtRed;
+          float y=image[i][j].rgbtGreen;
+          float m=image[i][j].rgbtBlue;
+          float ort=(r+y+m)/3;
+          int z=round(ort);
+
+         image[i][j].rgbtGreen=image[i][j].rgbtBlue=image[i][j].rgbtRed=z;
+
+
+
+        }
+
+}
+    return;
+}
+
+// Reflect image horizontally
+void reflect(int height, int width, RGBTRIPLE image[height][width])
+{
+    for(int i=0; i< height;i++)
+    {
+        for(int j=0;j< width/2 ;j++)
+        {
+            RGBTRIPLE temp=image[i][j];
+            image[i][j]=image[i][width - (j+1)];
+            image[i][width - (j+1)]=temp;
+
+        }
+    }
+    return;
+}
+
+// Blur image
+void blur(int height, int width, RGBTRIPLE image[height][width])
+
+{   RGBTRIPLE temp[height][width];
+    for(int i=0;i<height;i++)
+    {
+        for(int j=0;j< width;j++)
+        {
+         temp[i][j]=image[i][j];
+        }
+    }
+    for(int i=0;i<height;i++)
+    {
+        for(int j=0;j< width;j++)
+        {
+          int tr=0,ty=0,tm=0;
+          float c=0.0;
+          for(int x=-1;x<2;x++)
+          {for(int y=-1;y<2;y++)
+          {
+            int currentx=x+i;
+            int currenty=y+i;
+            if(currenty<0 ||currentx<0||currenty>(width -1)||currentx>(height -1))
+            {
+                continue;
+            }
+          tr+=image[currentx][currenty].rgbtRed;
+          tr+=image[currentx][currenty].rgbtGreen;
+          tr+=image[currentx][currenty].rgbtBlue;
+
+          c ++;
+
+          }
+          temp[i][j].rgbtRed=(tr/c);
+          temp[i][j].rgbtGreen=(ty/c);
+          temp[i][j].rgbtBlue=(tm/c);
+
+
+          }
+        }
+    }
+for(int i=0;i<height;i++)
+{
+    for(int j=0;j< width;j++)
+    {
+        image[i][j].rgbtRed=temp[i][j].rgbtRed;
+        image[i][j].rgbtGreen=temp[i][j].rgbtGreen;
+        image[i][j].rgbtBlue=temp[i][j].rgbtBlue;
+    }
+}
+
+
+
+
+    return;
+}
+
+// Detect edges
+void edges(int height, int width, RGBTRIPLE image[height][width])
+{ RGBTRIPLE temp[height][width];
+for(int i=0;i< height;i++)
+{
+    for(int j=0;j<width;j++)
+    {
+        temp[i][j]=image[i][j];
+
+
+    }
+
+    }
+    int Gx[3][3]={{-1,0,1},{-2,0,2},{-1,0,1}};
+   int Gy[3][3]={{-1,-2,-1},{0,0,0},{1,2,1}};
+
+    for(int i=0;i< height;i++)
+    {
+        for(int j=0;j<width;j++)
+        {
+        int kx=0;
+        int ky=0;
+        int yx=0;
+        int yy=0;
+        int mx=0;
+        int my=0;
+            for(int x=0;x<3;x++)
+            {
+                for(int y=0;y<3;y++)
+                {
+            if(i-1+x<0||i-1+x>height-1||i-1+y<0||i-1+y>width-1)
+            {
+                continue;
+            }
+            kx=kx+(image[i-1+x][i-1+y].rgbtRed*Gx[x][y]);
+            yx=yx+(image[i-1+x][i-1+y].rgbtGreen*Gx[x][y]);
+            mx=mx+(image[i-1+x][i-1+y].rgbtBlue*Gx[x][y]);
+
+            ky=ky+(image[i-1+x][i-1+y].rgbtRed*Gy[x][y]);
+            yy=yy+(image[i-1+x][i-1+y].rgbtGreen*Gy[x][y]);
+            my=my+(image[i-1+x][i-1+y].rgbtBlue*Gy[x][y]);
+        }
+      }
+     int Red=round(sqrt((kx*kx)+(ky*ky)));
+     int Green=round(sqrt((yx*yx)+(yy*yy)));
+     int Blue=round(sqrt((mx*mx)+(my*my)));
+     if(Red>255)
+     {
+        Red=255;
+     }
+ if(Green>255)
+     {
+        Green=255;
+     }
+      if(Blue>255)
+     {
+        Blue=255;
+     }
+temp[i][j].rgbtRed=Red;
+temp[i][j].rgbtGreen=Green;
+temp[i][j].rgbtBlue=Blue;
+
+}
+}
+for(int i=0;i< height;i++)
+{
+    for(int j=0;j< width;j++)
+    {
+        image[i][j].rgbtRed=temp[i][j].rgbtRed;
+        image[i][j].rgbtGreen=temp[i][j].rgbtGreen;
+        image[i][j].rgbtBlue=temp[i][j].rgbtBlue;
+    }
+}
+    return;
+}

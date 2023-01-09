@@ -1,0 +1,21 @@
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+int main(int argc, string argv[])
+{
+    int sayi=get_int(" ");
+    string s=get_string("plaintext:");
+      printf("ciphertext:");
+ for(int i=0;i<=strlen(s);i++)
+ {   int y,z;
+       y=(int)s[i];
+       z=y+sayi;
+         printf("%c",(char)z);
+
+ }
+
+return 0;
+}
+
+
+https://lab.cs50.io/cs50/labs/2018/fall/caesar/?

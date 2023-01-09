@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <cs50.h>
+
+/*void gecerlimi(credi)
+{int on,bir ;
+int toplamon=0;
+int toplambir=0;
+int ikili;
+ do{ikili=credi%100;
+ on=ikili/10;
+ on=on*2;
+ if(on>=10)
+ {
+ int x,y;
+ x=on/10;
+ y=on%10;
+ toplamon=x+y;
+
+ }
+ else
+ {toplamon=toplamon+on;}
+ bir=ikili%10;
+ toplambir=toplambir+bir;
+ credi=credi/100;}
+ while(credi<=0);
+ 
+ int toplam=0;
+ toplam=toplamon+toplambir;
+ if(toplam%10==0)
+ {
+   printf("VALID CRAD");  
+ }
+ else 
+ {
+     printf("INVALID CARD");
+ }
+
+}*/
+int main()
+{long credi;
+credi=get_long("number:");
+int bas=1;
+int x;
+//gecerlimi(credi);
+do
+{credi=credi/10;
+bas++;
+x=credi;
+
+}while(credi/10>=1);
+
+if(bas==13)
+{printf("VISA");}
+else if(bas==15)
+{printf("AMERICAN EXPRESS");
+}
+else if(x==4 && bas==16)
+{printf("VISA");}
+else if(x!=4 && bas==16)
+{printf("MASTERCARD");}
+else
+{printf("INVALED");}
+  return 0;
+}
+
+https://lab.cs50.io/cs50/labs/2018/fall/credit/

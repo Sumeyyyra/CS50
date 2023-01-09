@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+int main(int argc, char *argv[])
+{typedef uint8_t BYTE;
+ if(argc <2)
+ {
+    printf("Usage: ./recover IMAGE\n");
+    return 1;
+ }
+
+ FILE *input_file=fopen(argv[1],"r");
+ if(input_file==NULL)
+ {
+    printf("dosya bulunamadi.");
+    return 1;
+ }
+
+ BYTE buffer[512];
+ int control=0;
+char name[8];
+FILE * a=NULL;
+
+  while(fread(&buffer,512,1,input_file))
+  {//fileın başlangıcına bakıyo
+   if((buffer[0] == 0xff) && (buffer[1] == 0xd8) && (buffer[2] == 0xff) && ((buffer[3] &0xf0) == 0xe0))
+   {   //eski fielı kapa
+       if(control>0)
+   {
+      fclose(a);
+   }
+       //yeni file açıyo
+      sprintf(name,"%03i.jpg",control);
+      control++;
+      //file yazdırıyo
+      a=fopen(name,"w");
+
+   }
+
+if(control >0)
+   {
+      fwrite(&buffer,512,1,a);
+   }
+
+  }
+
+fclose(input_file);
+    fclose(a);
+
+
+
+
+
+
+}
